@@ -1,24 +1,22 @@
 #!/usr/bin/gawk -f
 BEGIN {
 	# external command to pipe codeblocks into:
-	linter = "shellcheck --wiki-link-count=0 --exclude=SC2148 -" # ignore missing shebang
+	linter = "shellcheck --color=always --wiki-link-count=0 --exclude=SC2148 -" # ignore missing shebang
 }
 
 function print_shellcheck_result() {
 	close(linter, "to")
 	while (linter |& getline line) {
-		if (line ~ "^In - line [0-9]+:$") {
+		if (line ~ "In - line [0-9]+:") {
 			match(line, /[0-9]+/)
 			linenumber = substr(line, RSTART, RLENGTH)
-			print "In " FILENAME " line " codeblock_start + linenumber ":"
+			print "\033[1mIn " FILENAME " line " codeblock_start + linenumber ":\033[0m"
 		} else {
 			print line
 		}
 	}
 	close(linter)
 }
-
-
 
 function match_codeblock_start(char) {
 	# https://spec.commonmark.org/0.30/#fenced-code-blocks
