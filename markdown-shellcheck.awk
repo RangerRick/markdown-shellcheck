@@ -10,13 +10,15 @@ function print_shellcheck_result() {
 		if (line ~ "^In - line [0-9]+:$") {
 			match(line, /[0-9]+/)
 			linenumber = substr(line, RSTART, RLENGTH)
-			sub(/[0-9]+/, codeblock_start + linenumber, line)
-			sub("-", FILENAME, line)
+			print "In " FILENAME " line " codeblock_start + linenumber ":"
+		} else {
+			print line
 		}
-		print line
 	}
 	close(linter)
 }
+
+
 
 function match_codeblock_start(char) {
 	# https://spec.commonmark.org/0.30/#fenced-code-blocks
