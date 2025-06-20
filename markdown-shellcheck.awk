@@ -1,4 +1,4 @@
-#!/usr/bin/gawk -f
+#!/usr/bin/env gawk -f
 BEGIN {
 	# external command to pipe codeblocks into:
 	linter = "shellcheck --color=always --wiki-link-count=0 --exclude=SC2148 -" # ignore missing shebang
